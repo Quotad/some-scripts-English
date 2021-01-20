@@ -1,11 +1,11 @@
 var authConfig = {
   version: "1.0.1-fix1",
-  dailyLimit: true, // 是否限制每一个邮箱每天只能提交一次请求
-  client_id: "",
+  dailyLimit: false, // Whether to limit each mailbox to only submit one request per day
+  client_id: ",
   client_secret: "",
-  refresh_token: "", // 授权 token
-  domain: "", // 面页中显示本站团队盘域, 可不填
-  // 黑名单, 免费版没有数据库, 一个可行思路是从自己服务器上获取, 可自行实现
+  refresh_token: "", // License token
+  domain: "", // Team area, available or unfilled
+  // Blacklist, free version, one of the leading installations, one-of-a-kind database, self-service server, blacklist
   black_list: ["example@gmail.com"]
 };
 
@@ -22,13 +22,12 @@ var html = `
       name="viewport"
       content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"
     />
-    <title>创建Google TeamDrive</title>
+    <title>Google TeamDrive</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -41,45 +40,43 @@ var html = `
     ></script>
   <!--源码地址: https://github.com/yyuueexxiinngg/some-scripts/blob/master/workers/google/drive/create-share-teamdrive.js-->
   </head>
-  <body>
+  <body style="background-color:GhostWhite;>
     <div id="app">
       <div id="container" class="container">
         <div class="row">
           <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 text-center">
-            <h1>创建Google TeamDrive</h1>
+            <h1><span style="color:DeepSkyBlue"> Create Google TeamDrive</span></h1>
              <p>${authConfig.version}</p>
          ${
            authConfig.domain
-             ? ` <h5>本站团队盘域为:  ${authConfig.domain}</h5>`
+             ? ` <h5>Domain:  <span style="color: green">${authConfig.domain}</h5>`
              : ""
          }
-            <p>
-              后端多个API请求, 过程耗时较长, 请耐心等待,
-              <span style="color: red"><b>切勿重复提交</b></span>
+              <span style="color: crimson"><b>Multiple API requests on the back end, the process takes a long time, please be patient, do not submit repeatedly</b></span>
             </p>
             <br />
             <div class="info-form text-left">
               <form id="teamDriveForm">
                 <div class="form-group">
                   <label for="teamDriveName" class="sr-only">
-                    TeamDrive 名称
+                    TeamDrive Name
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="teamDriveName"
-                    placeholder="TeamDrive 名称"
+                    placeholder="TeamDrive Name"
                   />
                 </div>
                 <div class="form-group">
                   <label for="emailAddress" class="sr-only">
-                    您的GMail邮箱地址
+                    GMail Address
                   </label>
                   <input
                     type="email"
                     class="form-control"
                     id="emailAddress"
-                    placeholder="您的GMail邮箱地址"
+                    placeholder="GMailAddress"
                   />
                 </div>
                 <div class="form-check">
@@ -90,7 +87,7 @@ var html = `
                     value=""
                   />
                   <label class="form-check-label" for="customTheme">
-                    自定TeamDrive主题头图
+                    TeamDrive CustomTheme
                   </label>
                 </div>
                 <div id="customThemeSection" class="d-none">
@@ -109,13 +106,12 @@ var html = `
                         class="form-check-label"
                         for="teamDriveThemeOptionRandom"
                       >
-                        随机
+                        Random
                       </label>
                     </div>
                   </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit"  class="btn btn-primary">Create!</button>
               </form>
             </div>
           </div>
@@ -134,34 +130,19 @@ var html = `
           <div class="modal-body text-center">
             <div class="d-flex justify-content-center">
               <div class="spinner-border" role="status">
-                <span class="sr-only">正在创建中...</span>
+                <span class="sr-only">TeamDrive being created...</span>
               </div>
             </div>
             <div clas="loader-txt">
-              <p>正在创建中...</p>
+              <p>TeamDrive being created...</p>
             </div>
           </div>
         </div>
       </div>
     </div>
     <footer class="page-footer font-small blue">
-
-      <div class="footer-copyright text-center py-3">
-        © 2019 源码:
-        <a
-          href="https://github.com/yyuueexxiinngg/some-scripts/blob/master/workers/google/drive/create-share-teamdrive.js"
-        >
-          yyuueexxiinngg
-        </a>
-        <br />
-        Special Thanks:
-        <a href="https://github.com/donwa/goindex">
-          donwa
-        </a>
-      </div>
     </footer>
   </body>
-
   <script>
     var teamDriveThemes;
     $("input[id=customTheme]").change(function() {
@@ -172,7 +153,6 @@ var html = `
         $("input[name=teamDriveTheme]")[0].click();
       }
     });
-
     $.get("/teamDriveThemes", function(json) {
       teamDriveThemes = json.teamDriveThemes;
       $.each(json.teamDriveThemes, function(i, item) {
@@ -191,7 +171,6 @@ var html = `
         </div>
         \`);
       });
-
       $("input[name=teamDriveTheme]").change(function() {
         var themeId = this.value;
         if (themeId === "random") {
@@ -200,7 +179,6 @@ var html = `
           var theme = teamDriveThemes.find(function(t) {
             return t.id == themeId;
           });
-
           $("#teamDriveThemePreview").html(
             \`
           <div class="card" style="background-color: \${theme.colorRgb}">
@@ -215,10 +193,8 @@ var html = `
           );
         }
       });
-
       $("#teamDriveForm").on("submit", function(event) {
         event.preventDefault();
-
         $("#loadMe").modal({
           backdrop: "static", //remove ability to close modal with click
           keyboard: false, //remove option to close with keyboard
@@ -234,11 +210,11 @@ var html = `
           }),
           success: function(data) {
             $("#loadMe").modal("hide");
-            alert("成功!");
+            alert("TeamDrive created successfully! Check the Shared Drives tab in your GDrive");
           },
           error: function(request, status, error) {
             $("#loadMe").modal("hide");
-            alert("失败!" + request.responseText);
+            alert("failure!" + request.responseText);
           },
           contentType: "application/json"
         });
@@ -252,8 +228,6 @@ var html = `
     }
   </style>
 </html>
-
-
 `;
 
 addEventListener("fetch", event => {
@@ -299,7 +273,7 @@ async function handleRequest(request) {
 
         if (authConfig.dailyLimit) {
           if (dailyLimit.includes(requestBody.emailAddress)) {
-            return new Response("每天只允许提交一次", {
+            return new Response("Only submit once per day", {
               status: 429
             });
           } else {
