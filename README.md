@@ -1,2 +1,2 @@
-# Some scripts
+# Some scripts - Translated
 Just some random scripts
