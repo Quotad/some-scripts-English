@@ -1,7 +1,7 @@
 var authConfig = {
   version: "1.0.1-fix1",
   dailyLimit: false, // Whether to limit each mailbox to only submit one request per day
-  client_id: ",
+  client_id: "",
   client_secret: "",
   refresh_token: "", // License token
   domain: "", // Team area, available or unfilled
